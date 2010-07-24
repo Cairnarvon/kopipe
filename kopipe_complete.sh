@@ -10,7 +10,7 @@ __kopipe()
 
     if [[ "$cur" == -* ]]; then
         COMPREPLY=( $( compgen -W \
-            '-h --help -l --list -n --new -e --edit -d --delete' \
+            '-h --help -l --list -n --new -e --edit -d --delete -s --search' \
             -- $cur ) )
     else
         cd ~/.kopipe

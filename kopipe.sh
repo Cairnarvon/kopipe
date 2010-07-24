@@ -39,7 +39,10 @@ usage()
             "(\$EDITOR environment\n\t\tvariable or \033[1mvi\033[0m).\n\n" \
             "\t$0 \033[1m-d\033[0m|\033[1m--delete\033[0m"                  \
             "\033[4mNAME\033[0m\n"                                          \
-            "\t\tDelete kopipe \033[4mNAME\033[0m\n" >&2
+            "\t\tDelete kopipe \033[4mNAME\033[0m\n"                        \
+            "\t$0 \033[1m-s\033[0m|\033[1m--search\033[0m"                  \
+            "\033[4mPATTERN\033[0m\n"                                       \
+            "\t\tFind kopipe matching \033[4mPATTERN\033[0m\n" >&2
     exit 1
 }
 
@@ -96,6 +99,16 @@ delete()
 }
 
 
+# -s, --search: search existing kopipe
+
+search()
+{
+    cd $KOPIPEDIR
+    grep -l "$1" * || echo -e "\033[2mNo match.\033[0m" >&2
+
+    exit 0
+}
+
 
 # Process arguments
 
@@ -112,6 +125,9 @@ if [ ! -z "$2" ]; then
         -d|--del|--delete)
             delete "$2"
             ;;
+        -s|--search)
+            search "$2"
+            ;;
     esac
 fi
 
@@ -119,7 +135,7 @@ fi
 # Maybe there's only one argument
 
 case $1 in
-    -n|--new|-e|--edit|-d|--del|--delete)
+    -n|--new|-e|--edit|-d|--del|--delete|-s|--search)
         echo "That command needs an argument, comrade." >&2
         exit 2
         ;;
