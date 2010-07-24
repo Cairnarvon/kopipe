@@ -1,16 +1,14 @@
 #!/bin/bash
 
-if [ -z $KOPIPEDIR ]; then
+if [ -z "$KOPIPEDIR" ]; then
     KOPIPEDIR=~/.kopipe
 fi
-
-EDITOR=$EDITOR
 
 
 # If it doesn't exist already, make a new kopipe directory
 
-if [ ! -d $KOPIPEDIR ]; then
-    mkdir $KOPIPEDIR && \
+if [ ! -d "$KOPIPEDIR" ]; then
+    mkdir "$KOPIPEDIR" && \
     echo -e "New kopipe directory created at \033[1m$KOPIPEDIR\033[0m" >&2 || \
     echo -e "\033[1;31mERROR\033[0m Couldn't create kopipe directory at"\
             "\033[1m$KOPIPEDIR\033[0m" >&2
@@ -82,7 +80,7 @@ new()
 
 edit()
 {
-    if [ -z $EDITOR ]; then
+    if [ -z "$EDITOR" ]; then
         EDITOR=vi
     fi
 
@@ -131,7 +129,7 @@ display()
         cat "$1"
         echo >&2
     else
-        echo -e "\033[2mKopipe \033[1m$1\033[2m does not seem to exist.\033[0m." >&2
+        echo -e "\033[2mKopipe \033[1m$1\033[2m does not seem to exist.\033[0m" >&2
     fi
 
     shift
@@ -148,7 +146,7 @@ display()
 arg=$1
 shift
 
-cd $KOPIPEDIR
+cd "$KOPIPEDIR"
 
 # If there's a second argument, we're probably doing something
 

@@ -5,7 +5,7 @@ __kopipe()
 {
     local cur
 
-    if [ ! -z $KOPIPEDIR ]; then
+    if [ -z "$KOPIPEDIR" ]; then
         KOPIPEDIR=~/.kopipe
     fi
 
@@ -17,7 +17,7 @@ __kopipe()
             '-h --help -l --list -n --new -e --edit -d --delete -s --search' \
             -- $cur ) )
     else
-        cd $KOPIPEDIR
+        cd "$KOPIPEDIR"
         COMPREPLY=( $( compgen -f -- $cur ) )
         cd - >/dev/null
     fi
