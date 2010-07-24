@@ -51,8 +51,7 @@ usage()
 
 list()
 {
-    cd $KOPIPEDIR
-    ls $1 2>/dev/null || echo -e "\033[2m(Nothing here.)\033[0m" >&2
+    ls $* 2>/dev/null || echo -e "\033[2m(Nothing here.)\033[0m" >&2
 
     exit 0
 }
@@ -63,10 +62,10 @@ list()
 new()
 {
     # Clear file if it exists already
-    echo -n > "$KOPIPEDIR/$1"
+    echo -n > "$1"
 
     while read -r line; do
-        echo $line >> "$KOPIPEDIR/$1"
+        echo $line >> "$1"
     done
 
     echo -e "\033[1m$1\033[0m saved." >&2
@@ -83,7 +82,7 @@ edit()
         EDITOR=vi
     fi
 
-    $EDITOR "$KOPIPEDIR/$1"
+    $EDITOR $*
 
     exit 0
 }
@@ -93,7 +92,12 @@ edit()
 
 delete()
 {
-    rm -i "$KOPIPEDIR/$1" && echo -e "\033[1m$1\033[0m deleted." >&2
+    rm -i -- "$1"
+    
+    shift
+    if [ ! -z "$1" ]; then
+        delete $*
+    fi
 
     exit 0
 }
@@ -103,8 +107,31 @@ delete()
 
 search()
 {
-    cd $KOPIPEDIR
-    grep -l "$1" * || echo -e "\033[2mNo match.\033[0m" >&2
+    local PATTERN
+
+    PATTERN="$1"
+    shift
+
+    grep -l "$PATTERN" $* || echo -e "\033[2mNo match.\033[0m" >&2
+
+    exit 0
+}
+
+
+# No options: just display kopipe
+
+display()
+{
+    if [ -f "$1" ]; then
+        cat "$1"
+    else
+        echo -e "\033[2mKopipe \033[1m$1\033[2m does not seem to exist.\033[0m." >&2
+    fi
+
+    shift
+    if [ ! -z "$1" ]; then
+        display $*
+    fi
 
     exit 0
 }
@@ -112,21 +139,26 @@ search()
 
 # Process arguments
 
+arg=$1
+shift
+
+cd $KOPIPEDIR
+
 # If there's a second argument, we're probably doing something
 
-if [ ! -z "$2" ]; then
-    case $1 in
+if [ ! -z "$1" ]; then
+    case $arg in
         -n|--new)
-            new "$2"
+            new $*
             ;;
         -e|--edit)
-            edit "$2"
+            edit $*
             ;;
         -d|--del|--delete)
-            delete "$2"
+            delete $*
             ;;
         -s|--search)
-            search "$2"
+            search $*
             ;;
     esac
 fi
@@ -134,7 +166,7 @@ fi
 
 # Maybe there's only one argument
 
-case $1 in
+case $arg in
     -n|--new|-e|--edit|-d|--del|--delete|-s|--search)
         echo "That command needs an argument, comrade." >&2
         exit 2
@@ -143,7 +175,7 @@ case $1 in
         usage
         ;;
     -l|--list)
-        list $2
+        list $*
         ;;
 esac
 
@@ -151,14 +183,8 @@ esac
 # However many arguments there are, they don't add up to a valid command, so
 # they must be a request for kopipe
 
-if [ ! -z "$1" ]; then
-    if [ -f "$KOPIPEDIR/$1" ]; then
-        cat "$KOPIPEDIR/$1"
-    else
-        echo "That kopipe does not seem to exist!" >&2
-    fi
-
-    exit 0
+if [ ! -z "$arg" ]; then
+    display "$arg" $*
 fi
 
 
