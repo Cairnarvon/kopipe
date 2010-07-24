@@ -5,6 +5,10 @@ __kopipe()
 {
     local cur
 
+    if [ ! -z $KOPIPEDIR ]; then
+        KOPIPEDIR=~/.kopipe
+    fi
+
     COMPREPLY=()
     cur=`_get_cword`
 
@@ -13,7 +17,7 @@ __kopipe()
             '-h --help -l --list -n --new -e --edit -d --delete -s --search' \
             -- $cur ) )
     else
-        cd ~/.kopipe
+        cd $KOPIPEDIR
         COMPREPLY=( $( compgen -f -- $cur ) )
         cd - >/dev/null
     fi

@@ -1,6 +1,9 @@
 #!/bin/bash
 
-KOPIPEDIR=~/.kopipe
+if [ -z $KOPIPEDIR ]; then
+    KOPIPEDIR=~/.kopipe
+fi
+
 EDITOR=$EDITOR
 
 
