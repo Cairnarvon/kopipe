@@ -94,13 +94,7 @@ edit()
 
 delete()
 {
-    rm -i -- "$1"
-    
-    shift
-    if [ ! -z "$1" ]; then
-        delete $*
-    fi
-
+    rm -i -- $*
     exit 0
 }
 
