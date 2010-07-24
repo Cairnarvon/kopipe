@@ -34,15 +34,16 @@ usage()
             "\t\tRead new kopipe from stdin and save it under"              \
             "\033[4mNAME\033[0m.\n\n"                                       \
             "\t$0 \033[1m-e\033[0m|\033[1m--edit\033[0m"                    \
-            "\033[4mNAME\033[0m\n"                                          \
+            "\033[4mNAME\033[0m...\n"                                       \
             "\t\tOpen kopipe \033[4mNAME\033[0m in your favourite editor"   \
             "(\$EDITOR environment\n\t\tvariable or \033[1mvi\033[0m).\n\n" \
             "\t$0 \033[1m-d\033[0m|\033[1m--delete\033[0m"                  \
-            "\033[4mNAME\033[0m\n"                                          \
-            "\t\tDelete kopipe \033[4mNAME\033[0m\n"                        \
+            "\033[4mNAME\033[0m...\n"                                       \
+            "\t\tDelete kopipe \033[4mNAME\033[0m.\n\n"                     \
             "\t$0 \033[1m-s\033[0m|\033[1m--search\033[0m"                  \
-            "\033[4mPATTERN\033[0m\n"                                       \
-            "\t\tFind kopipe matching \033[4mPATTERN\033[0m\n" >&2
+            "\033[4mPATTERN\033[0m ['\033[4mGLOB\033[0m']\n"                \
+            "\t\tFind kopipe matching \033[4mPATTERN\033[0m,"               \
+            "possibly just in \033[4mGLOB\033[0m.\n" >&2
     exit 1
 }
 
@@ -123,7 +124,9 @@ search()
 display()
 {
     if [ -f "$1" ]; then
+        echo -e "\033[2m$1\033[0m" >&2
         cat "$1"
+        echo >&2
     else
         echo -e "\033[2mKopipe \033[1m$1\033[2m does not seem to exist.\033[0m." >&2
     fi
