@@ -25,6 +25,8 @@ usage()
     echo -e "\033[1mNAME\033[0m\n"                                          \
             "\tkopipe - \033[1mXarn\033[0m's kopipe manager.\n"             \
             "\n\033[1mUSAGE\033[0m\n"                                       \
+            "\t$0 \033[4mNAME\033[0m...\n"                                  \
+            "\t\tDisplay the named kopipe.\n\n"                             \
             "\t$0 [\033[1m-h\033[0m|\033[1m--help\033[0m]\n"                \
             "\t\tShow this message and exit.\n\n"                           \
             "\t$0 \033[1m-l\033[0m|\033[1m--list\033[0m"                    \
