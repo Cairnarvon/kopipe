@@ -106,11 +106,16 @@ delete()
 search()
 {
     local PATTERN
+    local FILES
 
     PATTERN="$1"
     shift
 
-    grep -l "$PATTERN" $* || echo -e "\033[2mNo match.\033[0m" >&2
+    FILES="$*"
+    [ -z "$FILES" ] && FILES='*'
+        
+
+    grep -l "$PATTERN" $FILES || echo -e "\033[2mNo match.\033[0m" >&2
 
     exit 0
 }
